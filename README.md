@@ -53,6 +53,23 @@ deck_of_cards_simulator_frontend
 
 # Questions / Experiments
 
-- [ ] Can a Rust-based web server also host a web socket server all in one?
-- [ ] Where is the frontend going to be hosted?
+## What server do we use?
+
+- [x] Actix-web
+  - Took too long to figure out how to send a POST request with JSON data
+- [x] Rocket
+
+  - Winner - nice documentation even though it is a release candidate
+
 - [ ] Where is the server going to be hosted?
+
+- [x] Can a Rust-based web server also host a web socket server all in one?
+  - Rocket can use server sent events, which is pretty much just as good in this case
+
+## What front-end framework to use?
+
+- [ ] Yew
+- [ ] Seed-rs
+- [ ] Vue
+
+- [ ] Where is the frontend going to be hosted?
