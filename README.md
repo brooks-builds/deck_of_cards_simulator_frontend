@@ -68,8 +68,25 @@ deck_of_cards_simulator_frontend
 
 ## What front-end framework to use?
 
-- [ ] Yew
-- [ ] Seed-rs
-- [ ] Vue
-
+- [x] Yew
+  - Got the hello world working once, and then it never loaded again
+- [x] Seed-rs
+  - Got the counter example working.
+  - Figured out how to manipulate input fields
+- [x] Vue
+  - Winner
 - [ ] Where is the frontend going to be hosted?
+  - [ ] AWS S3
+  - [ ] AWS Amplify
+  - [ ] Digital Ocean
+    - $5 per month
+  - [ ] Heroku
+    - Free with delay
+  - [ ] Firebase
+    - Free
+  - [ ] Hetzner
+  - [ ] Ovh
+  - [ ] Linode
+    - $5 per month
+  - [ ] Vultr
+    - $2.50 per month
