@@ -33,6 +33,11 @@ export default new Vuex.Store({
         console.error("we got an error connecting to the websocket", error);
       }
     },
+    createGame({ commit, state }) {
+      commit("setMessage", "creating game");
+      const message = { command: "CreateGame" };
+      state.websocket.send(JSON.stringify(message));
+    },
   },
   modules: {},
 });

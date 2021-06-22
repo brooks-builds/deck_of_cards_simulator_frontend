@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <h1>Deck of Cards Simulator</h1>
-    <router-view />
+    <router-view @createGame="createGame" />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
 </template>
@@ -28,6 +28,9 @@ export default {
   methods: {
     showMessage() {
       this.messageBar.show();
+    },
+    createGame() {
+      this.$store.dispatch("createGame");
     },
   },
   watch: {
