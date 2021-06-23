@@ -48,6 +48,10 @@ export default new Vuex.Store({
         commit("setRoomCode", message.room_code);
       });
     },
+    joinRoom({ state }, roomCode) {
+      const message = { command: "JoinRoom", room_code: roomCode };
+      state.websocket.send(JSON.stringify(message));
+    },
   },
   modules: {},
 });

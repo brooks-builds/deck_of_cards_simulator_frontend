@@ -1,7 +1,9 @@
 <template>
   <div class="app">
-    <h1>Deck of Cards Simulator</h1>
-    <router-view @createGame="createGame" />
+    <router-link to="/">
+      <h1>Deck of Cards Simulator</h1>
+    </router-link>
+    <router-view @createGame="createGame" @joinRoom="joinRoom" />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
 </template>
@@ -31,6 +33,9 @@ export default {
     },
     createGame() {
       this.$store.dispatch("createGame");
+    },
+    joinRoom(roomCode) {
+      this.$store.dispatch("joinRoom", roomCode);
     },
   },
   watch: {
