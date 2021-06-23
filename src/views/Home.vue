@@ -14,6 +14,7 @@ export default {
   methods: {
     createGame() {
       this.$emit("createGame");
+      this.$router.push("/rooms");
     },
   },
 };
