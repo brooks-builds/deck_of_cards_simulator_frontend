@@ -31,7 +31,6 @@ export default {
   methods: {
     createGame() {
       this.$emit("createGame");
-      this.$router.push("/rooms");
     },
     handleJoinRoomTextfield(code) {
       this.joiningRoomCode = code;

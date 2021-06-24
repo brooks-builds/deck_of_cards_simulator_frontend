@@ -26,6 +26,9 @@ export default {
     message() {
       return this.$store.state.message;
     },
+    roomCode() {
+      return this.$store.state.roomCode;
+    },
   },
   methods: {
     showMessage() {
@@ -37,10 +40,17 @@ export default {
     joinRoom(roomCode) {
       this.$store.dispatch("joinRoom", roomCode);
     },
+    navigateToRoom() {
+      console.log("navigating to room");
+      this.$router.push(`/rooms/${this.roomCode}`);
+    },
   },
   watch: {
     message: {
       handler: "showMessage",
+    },
+    roomCode: {
+      handler: "navigateToRoom",
     },
   },
 };

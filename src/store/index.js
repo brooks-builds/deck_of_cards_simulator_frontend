@@ -28,8 +28,7 @@ export default new Vuex.Store({
       dispatch("handleWebsocketErrors");
       dispatch("handleWebsocketMessages");
     },
-    createGame({ commit, state }) {
-      commit("setMessage", "creating game");
+    createGame({ state }) {
       const message = { command: "CreateGame" };
       state.websocket.send(JSON.stringify(message));
     },
@@ -46,6 +45,9 @@ export default new Vuex.Store({
       state.websocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
         commit("setRoomCode", message.room_code);
+        let messageToDisplay = message.error ? message.error : message.message;
+        commit("setMessage", messageToDisplay);
+        console.log(message);
       });
     },
     joinRoom({ state }, roomCode) {
