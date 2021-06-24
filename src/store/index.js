@@ -54,6 +54,9 @@ export default new Vuex.Store({
       const message = { command: "JoinRoom", room_code: roomCode };
       state.websocket.send(JSON.stringify(message));
     },
+    resetState({ commit }) {
+      commit("setRoomCode", null);
+    },
   },
   modules: {},
 });

@@ -1,8 +1,6 @@
 <template>
   <div class="app">
-    <router-link to="/">
-      <h1>Deck of Cards Simulator</h1>
-    </router-link>
+    <h1 v-on:click="resetState" class="clickable">Deck of Cards Simulator</h1>
     <router-view @createGame="createGame" @joinRoom="joinRoom" />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -41,8 +39,15 @@ export default {
       this.$store.dispatch("joinRoom", roomCode);
     },
     navigateToRoom() {
-      console.log("navigating to room");
-      this.$router.push(`/rooms/${this.roomCode}`);
+      if (!this.roomCode && this.$route.name == "Home") return;
+      if (!this.roomCode && this.$route.name != "Home") {
+        this.$router.push("/");
+      } else if (this.roomCode) {
+        this.$router.push(`/rooms/${this.roomCode}`);
+      }
+    },
+    resetState() {
+      this.$store.dispatch("resetState");
     },
   },
   watch: {
@@ -64,5 +69,9 @@ body {
 
 .app {
   margin: 1rem;
+}
+
+.clickable {
+  cursor: pointer;
 }
 </style>
