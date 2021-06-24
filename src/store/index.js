@@ -25,6 +25,7 @@ export default new Vuex.Store({
       const uri = process.env.VUE_APP_WEBSOCKET_URI;
       const websocket = new WebSocket(uri);
       commit("setWebsocket", websocket);
+      commit("setMessage", "Connected to server");
       dispatch("handleWebsocketErrors");
       dispatch("handleWebsocketMessages");
     },
@@ -39,6 +40,7 @@ export default new Vuex.Store({
           "setMessage",
           "Cannot connect to game server, please try again later"
         );
+        commit("setWebsocket", null);
       });
     },
     handleWebsocketMessages({ state, commit }) {

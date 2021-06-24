@@ -9,5 +9,10 @@ export default {
       return this.$store.state.roomCode;
     },
   },
+  mounted() {
+    if (!this.roomCode) {
+      this.$router.push("/");
+    }
+  },
 };
 </script>

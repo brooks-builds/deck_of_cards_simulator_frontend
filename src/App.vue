@@ -1,6 +1,11 @@
 <template>
   <div class="app">
     <h1 v-on:click="resetState" class="clickable">Deck of Cards Simulator</h1>
+    <custom-button
+      v-if="websocketFailed"
+      label="reset connection"
+      @click="connectToServer"
+    ></custom-button>
     <router-view @createGame="createGame" @joinRoom="joinRoom" />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -9,12 +14,15 @@
 <script>
 import "./assets/reset.css";
 import "@material/mwc-snackbar";
+import CustomButton from "./components/CustomButton.vue";
+
 export default {
   mounted() {
-    this.$store.dispatch("connectToServer");
+    this.connectToServer();
     const messageBar = document.querySelector("#message");
     this.messageBar = messageBar;
   },
+  components: { CustomButton },
   data() {
     return {
       messageBar: null,
@@ -27,8 +35,14 @@ export default {
     roomCode() {
       return this.$store.state.roomCode;
     },
+    websocketFailed() {
+      return !this.$store.state.websocket;
+    },
   },
   methods: {
+    connectToServer() {
+      this.$store.dispatch("connectToServer");
+    },
     showMessage() {
       this.messageBar.show();
     },
