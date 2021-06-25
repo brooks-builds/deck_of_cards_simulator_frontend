@@ -6,7 +6,11 @@
       label="reset connection"
       @click="connectToServer"
     ></custom-button>
-    <router-view @createGame="createGame" @joinRoom="joinRoom" />
+    <router-view
+      @createGame="createGame"
+      @joinRoom="joinRoom"
+      @sendChatMessage="handleSendingChatMessage"
+    />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
 </template>
@@ -62,6 +66,9 @@ export default {
     },
     resetState() {
       this.$store.dispatch("resetState");
+    },
+    handleSendingChatMessage(message) {
+      this.$store.dispatch("sendChatMessage", message);
     },
   },
   watch: {

@@ -8,6 +8,7 @@ export default new Vuex.Store({
     websocket: null,
     message: "",
     roomCode: null,
+    chatMessages: [],
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -18,6 +19,11 @@ export default new Vuex.Store({
     },
     setRoomCode(state, roomCode) {
       Vue.set(state, "roomCode", roomCode);
+    },
+    addChatMessage(state, message) {
+      const messages = state.chatMessages;
+      messages.push(message);
+      Vue.set(state, "chatMessages", messages);
     },
   },
   actions: {
@@ -48,7 +54,12 @@ export default new Vuex.Store({
         const message = JSON.parse(event.data);
         commit("setRoomCode", message.room_code);
         let messageToDisplay = message.error ? message.error : message.message;
-        commit("setMessage", messageToDisplay);
+        if (messageToDisplay) {
+          commit("setMessage", messageToDisplay);
+        }
+        if (message.chat_message) {
+          commit("addChatMessage", message.chat_message);
+        }
         console.log(message);
       });
     },
@@ -58,6 +69,14 @@ export default new Vuex.Store({
     },
     resetState({ commit }) {
       commit("setRoomCode", null);
+    },
+    sendChatMessage({ state }, chatMessage) {
+      const message = {
+        command: "Chat",
+        message: chatMessage,
+        room_code: state.roomCode,
+      };
+      state.websocket.send(JSON.stringify(message));
     },
   },
   modules: {},
