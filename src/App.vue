@@ -10,6 +10,7 @@
       @createGame="createGame"
       @joinRoom="joinRoom"
       @sendChatMessage="handleSendingChatMessage"
+      @drawCard="handleDrawCard"
     />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -69,6 +70,9 @@ export default {
     },
     handleSendingChatMessage(message) {
       this.$store.dispatch("sendChatMessage", message);
+    },
+    handleDrawCard() {
+      this.$store.dispatch("drawCard");
     },
   },
   watch: {

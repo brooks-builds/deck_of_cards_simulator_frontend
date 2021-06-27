@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="cards" v-if="deckExists">
+    <div class="cards" v-if="deckExists" @click="handleClickingDeck">
       <card :display="displayCard"></card>
       <p>{{ cardCount }}</p>
     </div>
@@ -29,6 +29,11 @@ export default {
       return "nothing";
     },
   },
+  methods: {
+    handleClickingDeck() {
+      this.$emit("drawCard");
+    },
+  },
 };
 </script>
 
@@ -46,5 +51,6 @@ p {
 .cards {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <section class="room">
     <section class="main">
-      <deck></deck>
+      <deck @drawCard="handleDrawCard"></deck>
     </section>
     <chat class="chat" @sendChatMessage="sendChatMessage"></chat>
   </section>
@@ -29,6 +29,9 @@ export default {
   methods: {
     sendChatMessage(message) {
       this.$emit("sendChatMessage", message);
+    },
+    handleDrawCard() {
+      this.$emit("drawCard");
     },
   },
 };

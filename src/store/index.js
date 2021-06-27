@@ -85,6 +85,13 @@ export default new Vuex.Store({
       };
       state.websocket.send(JSON.stringify(message));
     },
+    drawCard({ state }) {
+      const message = {
+        command: "DrawCard",
+        room_code: state.roomCode,
+      };
+      state.websocket.send(JSON.stringify(message));
+    },
   },
   modules: {},
 });
