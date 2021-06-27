@@ -15,3 +15,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+mwc-button {
+  --mdc-theme-primary: #e9437a;
+  --mdc-theme-on-primary: white;
+}
+</style>

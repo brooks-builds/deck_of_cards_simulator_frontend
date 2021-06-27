@@ -1,29 +1,11 @@
-# deck_of_cards_simulator_frontend
+# Deck of Cards Simulator
 
-## Project setup
-```
-npm install
-```
+## Assets
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Web components
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- [material web components](https://github.com/material-components/material-components-web-components)
 
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
+### Art
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [playing cards](https://github.com/hayeah/playing-cards-assets)

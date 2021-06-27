@@ -1,16 +1,20 @@
 <template>
   <section class="room">
-    <section class="main">Main</section>
+    <section class="main">
+      <deck></deck>
+    </section>
     <chat class="chat" @sendChatMessage="sendChatMessage"></chat>
   </section>
 </template>
 
 <script>
 import Chat from "../components/Chat.vue";
+import Deck from "../components/Deck.vue";
 
 export default {
   components: {
     Chat,
+    Deck,
   },
   computed: {
     roomCode() {
@@ -38,6 +42,8 @@ export default {
 
 .main {
   width: 75vw;
+  display: flex;
+  justify-content: center;
 }
 
 .chat {
