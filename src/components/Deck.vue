@@ -1,8 +1,8 @@
 <template>
   <section>
-    <div class="cards">
-      <card></card>
-      <p>52</p>
+    <div class="cards" v-if="deckExists">
+      <card :display="displayCard"></card>
+      <p>{{ cardCount }}</p>
     </div>
   </section>
 </template>
@@ -13,6 +13,21 @@ import Card from "./Card.vue";
 export default {
   components: {
     Card,
+  },
+  computed: {
+    cardCount() {
+      return this.$store.state.drawDeckSize;
+    },
+    deckExists() {
+      return this.$store.state.drawDeckSize != null;
+    },
+    displayCard() {
+      if (this.$store.state.drawDeckSize > 0) {
+        return "back";
+      }
+
+      return "nothing";
+    },
   },
 };
 </script>

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     message: "",
     roomCode: null,
     chatMessages: [],
+    drawDeckSize: 0,
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
       const messages = state.chatMessages;
       messages.push(message);
       Vue.set(state, "chatMessages", messages);
+    },
+    setDrawDeckSize(state, size) {
+      Vue.set(state, "drawDeckSize", size);
     },
   },
   actions: {
@@ -59,6 +63,9 @@ export default new Vuex.Store({
         }
         if (message.chat_message) {
           commit("addChatMessage", message.chat_message);
+        }
+        if (message?.draw_deck_size >= 0) {
+          commit("setDrawDeckSize", message.draw_deck_size);
         }
         console.log(message);
       });
