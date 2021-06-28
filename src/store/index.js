@@ -11,6 +11,9 @@ export default new Vuex.Store({
     chatMessages: [],
     drawDeckSize: 0,
     hand: [],
+    commandToAction: {
+      CreateGame: "handleCreateGame",
+    },
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -59,9 +62,11 @@ export default new Vuex.Store({
         commit("setWebsocket", null);
       });
     },
-    handleWebsocketMessages({ state, commit }) {
+    handleWebsocketMessages({ state, commit, dispatch }) {
       state.websocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
+        const command = message.command;
+        dispatch(state.commandToAction[command]);
         commit("setRoomCode", message.room_code);
         let messageToDisplay = message.error ? message.error : message.message;
         if (messageToDisplay) {
@@ -100,6 +105,9 @@ export default new Vuex.Store({
         room_code: state.roomCode,
       };
       state.websocket.send(JSON.stringify(message));
+    },
+    handleCreateGame() {
+      console.log("creating game action");
     },
   },
   modules: {},
