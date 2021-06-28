@@ -10,6 +10,7 @@ export default new Vuex.Store({
     roomCode: null,
     chatMessages: [],
     drawDeckSize: 0,
+    hand: [],
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -28,6 +29,11 @@ export default new Vuex.Store({
     },
     setDrawDeckSize(state, size) {
       Vue.set(state, "drawDeckSize", size);
+    },
+    addCard(state, card) {
+      const hand = state.hand;
+      hand.push(card);
+      Vue.set(state, "hand", hand);
     },
   },
   actions: {
@@ -66,6 +72,9 @@ export default new Vuex.Store({
         }
         if (message?.draw_deck_size >= 0) {
           commit("setDrawDeckSize", message.draw_deck_size);
+        }
+        if (message.command == "DrawCard" && message.card) {
+          commit("addCard", message.card);
         }
         console.log(message);
       });

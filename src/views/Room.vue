@@ -2,6 +2,7 @@
   <section class="room">
     <section class="main">
       <deck @drawCard="handleDrawCard"></deck>
+      <hand class="hand"></hand>
     </section>
     <chat class="chat" @sendChatMessage="sendChatMessage"></chat>
   </section>
@@ -10,11 +11,13 @@
 <script>
 import Chat from "../components/Chat.vue";
 import Deck from "../components/Deck.vue";
+import Hand from "../components/Hand.vue";
 
 export default {
   components: {
     Chat,
     Deck,
+    Hand,
   },
   computed: {
     roomCode() {
@@ -53,5 +56,9 @@ export default {
   width: 25vw;
   border-left: 3px solid lightgray;
   height: 90vh;
+}
+
+.hand {
+  align-self: flex-end;
 }
 </style>
