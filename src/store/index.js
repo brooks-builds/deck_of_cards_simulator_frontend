@@ -13,6 +13,10 @@ export default new Vuex.Store({
     hand: [],
     commandToAction: {
       CreateGame: "handleCreateGame",
+      None: "handleNoAction",
+      JoinRoom: "handleJoinRoom",
+      Chat: "handleChat",
+      DrawCard: "handleDrawCard",
     },
   },
   mutations: {
@@ -65,23 +69,27 @@ export default new Vuex.Store({
     handleWebsocketMessages({ state, commit, dispatch }) {
       state.websocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
+        if (message.error) {
+          commit("setMessage", message.error);
+        }
+        // let messageToDisplay = message.error ? message.error : message.message;
+        // if (messageToDisplay) {
+        //   commit("setMessage", messageToDisplay);
+        // }
+        // commit("setRoomCode", message.room_code);
         const command = message.command;
-        dispatch(state.commandToAction[command]);
-        commit("setRoomCode", message.room_code);
-        let messageToDisplay = message.error ? message.error : message.message;
-        if (messageToDisplay) {
-          commit("setMessage", messageToDisplay);
-        }
-        if (message.chat_message) {
-          commit("addChatMessage", message.chat_message);
-        }
-        if (message?.draw_deck_size >= 0) {
-          commit("setDrawDeckSize", message.draw_deck_size);
-        }
-        if (message.command == "DrawCard" && message.card) {
-          commit("addCard", message.card);
-        }
-        console.log(message);
+        dispatch(state.commandToAction[command], message);
+
+        // if (message.chat_message) {
+        //   commit("addChatMessage", message.chat_message);
+        // }
+        // if (message?.draw_deck_size >= 0) {
+        //   commit("setDrawDeckSize", message.draw_deck_size);
+        // }
+        // if (message.command == "DrawCard" && message.card) {
+        //   commit("addCard", message.card);
+        // }
+        // console.log(message);
       });
     },
     joinRoom({ state }, roomCode) {
@@ -106,8 +114,24 @@ export default new Vuex.Store({
       };
       state.websocket.send(JSON.stringify(message));
     },
-    handleCreateGame() {
-      console.log("creating game action");
+    handleCreateGame({ commit, dispatch }, event) {
+      console.log(event);
+      commit("setMessage", event.message);
+      dispatch("handleJoinRoom", event);
+    },
+    handleNoAction() {
+      console.error("no action was sent from the server");
+    },
+    handleJoinRoom({ commit }, event) {
+      commit("setRoomCode", event.room_code);
+      commit("setDrawDeckSize", event.draw_deck_size);
+    },
+    handleChat({ commit }, event) {
+      commit("addChatMessage", event.chat_message);
+    },
+    handleDrawCard({ commit }, event) {
+      commit("addCard", event.card);
+      commit("setDrawDeckSize", event.draw_deck_size);
     },
   },
   modules: {},
