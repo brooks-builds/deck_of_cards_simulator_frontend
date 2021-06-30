@@ -12,11 +12,12 @@ export default new Vuex.Store({
     drawDeckSize: 0,
     hand: [],
     commandToAction: {
-      CreateGame: "handleCreateGame",
+      GameCreated: "handleCreateGame",
       None: "handleNoAction",
-      JoinRoom: "handleJoinRoom",
+      RoomJoined: "handleJoinRoom",
       Chat: "handleChat",
       DrawCard: "handleDrawCard",
+      CardDrawn: "handleDrawDeckUpdated",
     },
   },
   mutations: {
@@ -72,24 +73,8 @@ export default new Vuex.Store({
         if (message.error) {
           commit("setMessage", message.error);
         }
-        // let messageToDisplay = message.error ? message.error : message.message;
-        // if (messageToDisplay) {
-        //   commit("setMessage", messageToDisplay);
-        // }
-        // commit("setRoomCode", message.room_code);
-        const command = message.command;
-        dispatch(state.commandToAction[command], message);
-
-        // if (message.chat_message) {
-        //   commit("addChatMessage", message.chat_message);
-        // }
-        // if (message?.draw_deck_size >= 0) {
-        //   commit("setDrawDeckSize", message.draw_deck_size);
-        // }
-        // if (message.command == "DrawCard" && message.card) {
-        //   commit("addCard", message.card);
-        // }
-        // console.log(message);
+        const incomingEvent = message.event;
+        dispatch(state.commandToAction[incomingEvent], message);
       });
     },
     joinRoom({ state }, roomCode) {
@@ -115,7 +100,6 @@ export default new Vuex.Store({
       state.websocket.send(JSON.stringify(message));
     },
     handleCreateGame({ commit, dispatch }, event) {
-      console.log(event);
       commit("setMessage", event.message);
       dispatch("handleJoinRoom", event);
     },
@@ -127,10 +111,12 @@ export default new Vuex.Store({
       commit("setDrawDeckSize", event.draw_deck_size);
     },
     handleChat({ commit }, event) {
-      commit("addChatMessage", event.chat_message);
+      commit("addChatMessage", event.message);
     },
     handleDrawCard({ commit }, event) {
       commit("addCard", event.card);
+    },
+    handleDrawDeckUpdated({ commit }, event) {
       commit("setDrawDeckSize", event.draw_deck_size);
     },
   },

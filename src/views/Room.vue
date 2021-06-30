@@ -60,5 +60,6 @@ export default {
 
 .hand {
   align-self: flex-end;
+  position: absolute;
 }
 </style>
