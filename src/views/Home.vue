@@ -3,6 +3,12 @@
     <custom-button label="Create Game" @click="createGame"></custom-button>
     <div>
       <custom-text-field
+        label="name"
+        @input="handleNameTextfield"
+      ></custom-text-field>
+    </div>
+    <div>
+      <custom-text-field
         label="room code"
         @input="handleJoinRoomTextfield"
       ></custom-text-field>
@@ -37,6 +43,9 @@ export default {
     },
     handleJoinRoomClick() {
       this.$emit("joinRoom", this.joiningRoomCode);
+    },
+    handleNameTextfield(name) {
+      this.$emit("nameSet", name);
     },
   },
 };

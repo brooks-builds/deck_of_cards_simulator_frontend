@@ -19,6 +19,7 @@ export default new Vuex.Store({
       DrawCard: "handleDrawCard",
       CardDrawn: "handleDrawDeckUpdated",
     },
+    name: "",
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
       hand.push(card);
       Vue.set(state, "hand", hand);
     },
+    setName(state, name) {
+      Vue.set(state, "name", name);
+    },
   },
   actions: {
     connectToServer({ commit, dispatch }) {
@@ -54,7 +58,7 @@ export default new Vuex.Store({
       dispatch("handleWebsocketMessages");
     },
     createGame({ state }) {
-      const message = { command: "CreateGame" };
+      const message = { command: "CreateGame", message: state.name };
       state.websocket.send(JSON.stringify(message));
     },
     handleWebsocketErrors({ state, commit }) {
@@ -118,6 +122,9 @@ export default new Vuex.Store({
     },
     handleDrawDeckUpdated({ commit }, event) {
       commit("setDrawDeckSize", event.draw_deck_size);
+    },
+    setName({ commit }, name) {
+      commit("setName", name);
     },
   },
   modules: {},

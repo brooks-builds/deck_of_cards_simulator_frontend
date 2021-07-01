@@ -11,6 +11,7 @@
       @joinRoom="joinRoom"
       @sendChatMessage="handleSendingChatMessage"
       @drawCard="handleDrawCard"
+      @nameSet="handleNameSet"
     />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -73,6 +74,9 @@ export default {
     },
     handleDrawCard() {
       this.$store.dispatch("drawCard");
+    },
+    handleNameSet(name) {
+      this.$store.dispatch("setName", name);
     },
   },
   watch: {
