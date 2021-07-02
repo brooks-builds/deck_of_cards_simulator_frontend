@@ -14,6 +14,7 @@ export default new Vuex.Store({
     hand: [],
     commandToAction: {
       CreateGame: "handleCreateGame",
+      JoinRoom: "handleJoinRoom",
     },
     name: "",
   },
@@ -69,6 +70,7 @@ export default new Vuex.Store({
     handleWebsocketMessages({ state, commit, dispatch }) {
       state.websocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
+        console.log(message);
         if (message.error) {
           commit("setMessage", message.error);
         }
@@ -76,9 +78,13 @@ export default new Vuex.Store({
         dispatch(state.commandToAction[incomingAction], message.data);
       });
     },
-    joinRoom({ state }, roomCode) {
-      const message = { command: "JoinRoom", room_code: roomCode };
-      state.websocket.send(JSON.stringify(message));
+    joinRoom({ state, commit }, rawRoomId) {
+      const roomId = Number(rawRoomId);
+      if (isNaN(roomId)) {
+        commit("setMessage", "Invalid room code");
+        return;
+      }
+      Api.joinRoom(state.websocket, roomId, state.name);
     },
     resetState({ commit }) {
       commit("setRoomCode", null);
@@ -107,7 +113,7 @@ export default new Vuex.Store({
     },
     handleJoinRoom({ commit }, messageData) {
       commit("setRoomCode", messageData.room_id);
-      // commit("setDrawDeckSize", event.draw_deck_size);
+      commit("addChatMessage", `${messageData.player_name} joined the room`);
     },
     handleChat({ commit }, event) {
       commit("addChatMessage", event.message);
