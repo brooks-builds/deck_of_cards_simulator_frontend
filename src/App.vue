@@ -1,6 +1,10 @@
 <template>
   <div class="app">
-    <h1 v-on:click="resetState" class="clickable">Deck of Cards Simulator</h1>
+    <top-bar
+      title="Deck of Cards Simulator"
+      class="top-bar"
+      :roomCode="roomCode"
+    ></top-bar>
     <custom-button
       v-if="websocketFailed"
       label="reset connection"
@@ -21,6 +25,7 @@
 import "./assets/reset.css";
 import "@material/mwc-snackbar";
 import CustomButton from "./components/CustomButton.vue";
+import TopBar from "./components/TopBar.vue";
 
 export default {
   mounted() {
@@ -28,7 +33,7 @@ export default {
     const messageBar = document.querySelector("#message");
     this.messageBar = messageBar;
   },
-  components: { CustomButton },
+  components: { CustomButton, TopBar },
   data() {
     return {
       messageBar: null,

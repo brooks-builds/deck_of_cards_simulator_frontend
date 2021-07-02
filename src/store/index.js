@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import Api from "../api";
 
 Vue.use(Vuex);
 
@@ -12,12 +13,7 @@ export default new Vuex.Store({
     drawDeckSize: 0,
     hand: [],
     commandToAction: {
-      GameCreated: "handleCreateGame",
-      None: "handleNoAction",
-      RoomJoined: "handleJoinRoom",
-      Chat: "handleChat",
-      DrawCard: "handleDrawCard",
-      CardDrawn: "handleDrawDeckUpdated",
+      CreateGame: "handleCreateGame",
     },
     name: "",
   },
@@ -58,8 +54,7 @@ export default new Vuex.Store({
       dispatch("handleWebsocketMessages");
     },
     createGame({ state }) {
-      const message = { command: "CreateGame", message: state.name };
-      state.websocket.send(JSON.stringify(message));
+      Api.createGame(state.websocket, state.name);
     },
     handleWebsocketErrors({ state, commit }) {
       state.websocket.addEventListener("error", (error) => {
@@ -77,8 +72,8 @@ export default new Vuex.Store({
         if (message.error) {
           commit("setMessage", message.error);
         }
-        const incomingEvent = message.event;
-        dispatch(state.commandToAction[incomingEvent], message);
+        const incomingAction = message.action;
+        dispatch(state.commandToAction[incomingAction], message.data);
       });
     },
     joinRoom({ state }, roomCode) {
@@ -103,16 +98,16 @@ export default new Vuex.Store({
       };
       state.websocket.send(JSON.stringify(message));
     },
-    handleCreateGame({ commit, dispatch }, event) {
-      commit("setMessage", event.message);
-      dispatch("handleJoinRoom", event);
+    handleCreateGame({ commit, dispatch }, messageData) {
+      commit("setMessage", "game created");
+      dispatch("handleJoinRoom", messageData);
     },
     handleNoAction() {
       console.error("no action was sent from the server");
     },
-    handleJoinRoom({ commit }, event) {
-      commit("setRoomCode", event.room_code);
-      commit("setDrawDeckSize", event.draw_deck_size);
+    handleJoinRoom({ commit }, messageData) {
+      commit("setRoomCode", messageData.room_id);
+      // commit("setDrawDeckSize", event.draw_deck_size);
     },
     handleChat({ commit }, event) {
       commit("addChatMessage", event.message);
