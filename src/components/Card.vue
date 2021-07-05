@@ -65,6 +65,7 @@ export default {
     display: String, // possible choices are "front", "back", "nothing"
     value: String,
     suite: String,
+    small: Boolean,
   },
   data() {
     return {
@@ -132,7 +133,7 @@ export default {
   },
   computed: {
     computeClasses() {
-      return this.states[this.display];
+      return `${this.states[this.display]} ${this.small ? "small" : ""}`;
     },
     displayCardBack() {
       return this.display == this.states.back;
@@ -164,5 +165,10 @@ div {
 .nothing {
   border: 1px solid green;
   border-radius: 10px;
+}
+
+.small {
+  width: 1.5rem;
+  height: 2rem;
 }
 </style>

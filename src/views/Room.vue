@@ -1,10 +1,35 @@
 <template>
   <section class="room">
     <section class="main">
-      <deck @drawCard="handleDrawCard"></deck>
-      <hand class="hand"></hand>
+      <section class="other-players row">
+        <div
+          v-for="otherPlayer in otherPlayers"
+          :key="otherPlayer.id"
+          class="other-player"
+        >
+          <p>{{ otherPlayer.name }}</p>
+          <div class="row">
+            <card
+              v-for="(card, index) in otherPlayer.hand"
+              :key="index"
+              :display="displayCardFrontOrBack(card)"
+              :suite="card.suite"
+              :value="card.value"
+              small
+            ></card>
+          </div>
+        </div>
+      </section>
+      <section class="center">
+        <deck @drawCard="handleDrawCard" class="deck row"></deck>
+      </section>
+      <section class="center">
+        <hand class="hand"></hand>
+      </section>
     </section>
-    <chat class="chat" @sendChatMessage="sendChatMessage"></chat>
+    <section class="row">
+      <chat class="chat" @sendChatMessage="sendChatMessage"></chat>
+    </section>
   </section>
 </template>
 
@@ -12,16 +37,21 @@
 import Chat from "../components/Chat.vue";
 import Deck from "../components/Deck.vue";
 import Hand from "../components/Hand.vue";
+import Card from "../components/Card.vue";
 
 export default {
   components: {
     Chat,
     Deck,
     Hand,
+    Card,
   },
   computed: {
     roomCode() {
       return this.$store.state.roomCode;
+    },
+    otherPlayers() {
+      return this.$store.state.otherPlayers;
     },
   },
   mounted() {
@@ -36,6 +66,13 @@ export default {
     handleDrawCard() {
       this.$emit("drawCard");
     },
+    displayCardFrontOrBack(card) {
+      if (card.value && card.suite) {
+        return "front";
+      }
+
+      return "back";
+    },
   },
 };
 </script>
@@ -49,7 +86,8 @@ export default {
 .main {
   width: 75vw;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .chat {
@@ -60,6 +98,24 @@ export default {
 
 .hand {
   align-self: flex-end;
-  position: absolute;
+}
+
+.other-players {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.row {
+  display: flex;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.other-player {
+  display: flex;
+  flex-direction: column;
 }
 </style>

@@ -18,9 +18,11 @@ export default new Vuex.Store({
       Chat: "handleChat",
       DrawCard: "handleDrawCard",
       DrawDeckUpdated: "handleDrawDeckUpdated",
+      PlayerJoinedRoomInSession: "handlePlayerJoinedRoomInSession",
     },
     name: "",
     playerId: null,
+    otherPlayers: [],
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -50,6 +52,19 @@ export default new Vuex.Store({
     },
     setPlayerId(state, playerId) {
       Vue.set(state, "playerId", playerId);
+    },
+    addPlayer(state, player) {
+      const otherPlayers = state.otherPlayers;
+      otherPlayers.push(player);
+      Vue.set(state, "otherPlayers", otherPlayers);
+    },
+    addCardToOtherPlayer(state, { card, playerId }) {
+      const otherPlayer = state.otherPlayers.find(
+        (otherPlayer) => otherPlayer.id === playerId
+      );
+      if (otherPlayer) {
+        otherPlayer.hand.push(card);
+      }
     },
   },
   actions: {
@@ -139,8 +154,21 @@ export default new Vuex.Store({
     handleDrawCard({ commit }, event) {
       commit("addCard", event.card);
     },
-    handleDrawDeckUpdated({ commit }, event) {
-      commit("setDrawDeckSize", event.draw_deck_size);
+    handleDrawDeckUpdated({ commit }, messageData) {
+      commit("setDrawDeckSize", messageData.draw_deck_size);
+      let { card } = messageData;
+      if (!card) {
+        card = { suite: null, value: null };
+      }
+      commit("addCardToOtherPlayer", { card, playerId: messageData.player_id });
+    },
+    handlePlayerJoinedRoomInSession({ commit }, messageData) {
+      const player = {
+        hand: [],
+        id: messageData.player_id,
+        name: messageData.player_name,
+      };
+      commit("addPlayer", player);
     },
     setName({ commit }, name) {
       commit("setName", name);
