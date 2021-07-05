@@ -4,7 +4,9 @@
     <section class="chat-messages">
       <ol>
         <li v-for="(message, index) in chatMessages" :key="index">
-          {{ message }}
+          <span class="chat-name" v-if="message.sender"
+            >{{ message.sender }}: </span
+          >{{ message.message }}
         </li>
       </ol>
     </section>

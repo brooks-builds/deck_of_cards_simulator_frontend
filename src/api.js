@@ -1,3 +1,5 @@
+import MessageBuilder from "./message";
+
 const Api = {
   actions: {
     createGame: "CreateGame",
@@ -15,6 +17,16 @@ const Api = {
       action: this.actions.joinRoom,
       data: { room_id: roomId, player_name: playerName },
     };
+    console.log("built message for chatting", message);
+    websocket.send(JSON.stringify(message));
+  },
+  sendChatMessage(websocket, chatMessage, name, roomId) {
+    const message = new MessageBuilder()
+      .setAction("Chat")
+      .setRoomId(roomId)
+      .setPlayerName(name)
+      .setChatMessage(chatMessage)
+      .build();
     websocket.send(JSON.stringify(message));
   },
 };

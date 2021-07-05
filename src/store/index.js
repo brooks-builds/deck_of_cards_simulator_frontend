@@ -15,6 +15,7 @@ export default new Vuex.Store({
     commandToAction: {
       CreateGame: "handleCreateGame",
       JoinRoom: "handleJoinRoom",
+      Chat: "handleChat",
     },
     name: "",
   },
@@ -90,12 +91,13 @@ export default new Vuex.Store({
       commit("setRoomCode", null);
     },
     sendChatMessage({ state }, chatMessage) {
-      const message = {
-        command: "Chat",
-        message: chatMessage,
-        room_code: state.roomCode,
-      };
-      state.websocket.send(JSON.stringify(message));
+      console.log("sending chat message", chatMessage);
+      Api.sendChatMessage(
+        state.websocket,
+        chatMessage,
+        state.name,
+        state.roomCode
+      );
     },
     drawCard({ state }) {
       const message = {
@@ -113,10 +115,15 @@ export default new Vuex.Store({
     },
     handleJoinRoom({ commit }, messageData) {
       commit("setRoomCode", messageData.room_id);
-      commit("addChatMessage", `${messageData.player_name} joined the room`);
+      commit("addChatMessage", {
+        message: `${messageData.player_name} joined the room`,
+      });
     },
     handleChat({ commit }, event) {
-      commit("addChatMessage", event.message);
+      commit("addChatMessage", {
+        sender: event.player_name,
+        message: event.message,
+      });
     },
     handleDrawCard({ commit }, event) {
       commit("addCard", event.card);
