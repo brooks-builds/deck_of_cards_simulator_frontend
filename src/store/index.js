@@ -118,6 +118,7 @@ export default new Vuex.Store({
       commit("addChatMessage", {
         message: `${messageData.player_name} joined the room`,
       });
+      commit("setDrawDeckSize", messageData.draw_deck_size);
     },
     handleChat({ commit }, event) {
       commit("addChatMessage", {
