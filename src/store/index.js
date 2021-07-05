@@ -16,8 +16,11 @@ export default new Vuex.Store({
       CreateGame: "handleCreateGame",
       JoinRoom: "handleJoinRoom",
       Chat: "handleChat",
+      DrawCard: "handleDrawCard",
+      DrawDeckUpdated: "handleDrawDeckUpdated",
     },
     name: "",
+    playerId: null,
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -44,6 +47,9 @@ export default new Vuex.Store({
     },
     setName(state, name) {
       Vue.set(state, "name", name);
+    },
+    setPlayerId(state, playerId) {
+      Vue.set(state, "playerId", playerId);
     },
   },
   actions: {
@@ -100,25 +106,29 @@ export default new Vuex.Store({
       );
     },
     drawCard({ state }) {
-      const message = {
-        command: "DrawCard",
-        room_code: state.roomCode,
-      };
-      state.websocket.send(JSON.stringify(message));
+      Api.drawCard(state.websocket, state.roomCode, state.playerId);
     },
     handleCreateGame({ commit, dispatch }, messageData) {
       commit("setMessage", "game created");
       dispatch("handleJoinRoom", messageData);
+      commit("setPlayerId", messageData.player_id);
     },
     handleNoAction() {
       console.error("no action was sent from the server");
     },
     handleJoinRoom({ commit }, messageData) {
-      commit("setRoomCode", messageData.room_id);
+      if (messageData.room_id) {
+        commit("setRoomCode", messageData.room_id);
+      }
       commit("addChatMessage", {
         message: `${messageData.player_name} joined the room`,
       });
-      commit("setDrawDeckSize", messageData.draw_deck_size);
+      if (messageData.draw_deck_size) {
+        commit("setDrawDeckSize", messageData.draw_deck_size);
+      }
+      if (messageData.player_id) {
+        commit("setPlayerId", messageData.player_id);
+      }
     },
     handleChat({ commit }, event) {
       commit("addChatMessage", {

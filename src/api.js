@@ -29,6 +29,14 @@ const Api = {
       .build();
     websocket.send(JSON.stringify(message));
   },
+  drawCard(websocket, roomId, playerId) {
+    const message = new MessageBuilder()
+      .setAction("DrawCard")
+      .setRoomId(roomId)
+      .setPlayerId(playerId)
+      .build();
+    websocket.send(JSON.stringify(message));
+  },
 };
 
 export default Api;

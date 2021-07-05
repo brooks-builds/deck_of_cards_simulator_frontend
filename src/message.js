@@ -19,6 +19,11 @@ class MessageBuilder {
     return this;
   }
 
+  setPlayerId(playerId) {
+    this.playerId = playerId;
+    return this;
+  }
+
   build() {
     return {
       action: this.action,
@@ -26,6 +31,7 @@ class MessageBuilder {
         player_name: this.playerName,
         room_id: this.roomId,
         message: this.message,
+        player_id: this.playerId,
       },
     };
   }
