@@ -24,7 +24,10 @@
         <deck @drawCard="handleDrawCard" class="deck row"></deck>
       </section>
       <section class="center">
-        <hand class="hand"></hand>
+        <hand
+          class="hand"
+          @toggleVisibility="handleCardTogglingVisibility"
+        ></hand>
       </section>
     </section>
     <section class="row">
@@ -72,6 +75,9 @@ export default {
       }
 
       return "back";
+    },
+    handleCardTogglingVisibility(card) {
+      this.$emit("cardTogglingVisibility", card);
     },
   },
 };

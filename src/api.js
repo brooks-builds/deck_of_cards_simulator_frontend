@@ -37,6 +37,15 @@ const Api = {
       .build();
     websocket.send(JSON.stringify(message));
   },
+  toggleCardVisibility(websocket, roomId, playerId, card) {
+    const message = new MessageBuilder()
+      .setAction("ToggleVisibilityOfCard")
+      .setRoomId(roomId)
+      .setPlayerId(playerId)
+      .setCard(card)
+      .build();
+    websocket.send(JSON.stringify(message));
+  },
 };
 
 export default Api;

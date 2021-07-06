@@ -1,11 +1,16 @@
 <template>
-  <div :class="computeClasses">
+  <div :class="computeClasses" class="card" @click="handleClick">
+    <visibility-toggle
+      v-if="visibilityToggle"
+      :visible="visible"
+    ></visibility-toggle>
     <img :src="back" alt="Back of a playing card" v-if="displayCardBack" />
     <img :src="faceCard" :alt="altText" v-else-if="displayCardFront" />
   </div>
 </template>
 
 <script>
+import VisibilityToggle from "./VisibilityToggleIcon.vue";
 import back from "../assets/back.png";
 import twoOfClubs from "../assets/2_of_clubs.svg";
 import threeOfClubs from "../assets/3_of_clubs.svg";
@@ -66,6 +71,8 @@ export default {
     value: String,
     suite: String,
     small: Boolean,
+    visibilityToggle: Boolean,
+    visible: Boolean,
   },
   data() {
     return {
@@ -142,11 +149,22 @@ export default {
       return this.display == this.states.front;
     },
     faceCard() {
-      console.log(`${this.value}${this.suite}`);
       return this.cardFaces[`${this.value}${this.suite}`];
     },
     altText() {
       return `${this.value} of ${this.suite}`;
+    },
+  },
+  components: {
+    VisibilityToggle,
+  },
+  methods: {
+    handleClick() {
+      this.$emit("click", {
+        value: this.value,
+        suite: this.suite,
+        visible: this.visible,
+      });
     },
   },
 };
@@ -154,12 +172,16 @@ export default {
 
 <style scoped>
 img {
-  width: inherit;
+  width: 100%;
 }
 
 div {
   width: 2.5rem;
   height: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .nothing {

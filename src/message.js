@@ -24,6 +24,11 @@ class MessageBuilder {
     return this;
   }
 
+  setCard(card) {
+    this.card = card;
+    return this;
+  }
+
   build() {
     return {
       action: this.action,
@@ -32,6 +37,7 @@ class MessageBuilder {
         room_id: this.roomId,
         message: this.message,
         player_id: this.playerId,
+        card: this.card,
       },
     };
   }

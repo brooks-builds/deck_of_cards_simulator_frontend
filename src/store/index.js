@@ -173,6 +173,14 @@ export default new Vuex.Store({
     setName({ commit }, name) {
       commit("setName", name);
     },
+    toggleCardVisibility({ state }, card) {
+      Api.toggleCardVisibility(
+        state.websocket,
+        state.roomCode,
+        state.playerId,
+        card
+      );
+    },
   },
   modules: {},
 });

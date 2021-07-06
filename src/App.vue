@@ -16,6 +16,7 @@
       @sendChatMessage="handleSendingChatMessage"
       @drawCard="handleDrawCard"
       @nameSet="handleNameSet"
+      @cardTogglingVisibility="handleCardTogglingVisibility"
     />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -82,6 +83,9 @@ export default {
     },
     handleNameSet(name) {
       this.$store.dispatch("setName", name);
+    },
+    handleCardTogglingVisibility(card) {
+      this.$store.dispatch("toggleCardVisibility", card);
     },
   },
   watch: {
