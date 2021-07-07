@@ -19,6 +19,7 @@ export default new Vuex.Store({
       DrawCard: "handleDrawCard",
       DrawDeckUpdated: "handleDrawDeckUpdated",
       PlayerJoinedRoomInSession: "handlePlayerJoinedRoomInSession",
+      ToggleVisibilityOfCard: "handleToggleVisibilityOfCard",
     },
     name: "",
     playerId: null,
@@ -65,6 +66,12 @@ export default new Vuex.Store({
       if (otherPlayer) {
         otherPlayer.hand.push(card);
       }
+    },
+    setHand(state, hand) {
+      Vue.set(state, "hand", hand);
+    },
+    setOtherPlayers(state, otherPlayers) {
+      Vue.set(state, "otherPlayers", otherPlayers);
     },
   },
   actions: {
@@ -180,6 +187,47 @@ export default new Vuex.Store({
         state.playerId,
         card
       );
+    },
+    // We are having to do a lot of extra work due to the lack of ids on the cards. This is causing us
+    // to do lots of searching, if statements, and other evil things.
+    handleToggleVisibilityOfCard({ state, commit }, messageData) {
+      if (messageData.player_id == state.playerId) {
+        state.hand.map((card) => {
+          if (
+            card.suite === messageData.card.suite &&
+            card.value === messageData.card.value
+          ) {
+            card.visible = messageData.card.visible;
+          }
+        });
+        commit("setHand", state.hand);
+      } else {
+        state.otherPlayers.map((player) => {
+          if (player.id == messageData.player_id) {
+            for (let card of player.hand) {
+              if (messageData.card.visible) {
+                if (!card.visible) {
+                  card.visible = true;
+                  card.suite = messageData.card.suite;
+                  card.value = messageData.card.value;
+                  break;
+                }
+              } else {
+                if (
+                  card.suite == messageData.card.suite &&
+                  card.value == messageData.card.value
+                ) {
+                  card.visible = false;
+                  card.suite = null;
+                  card.value = null;
+                  break;
+                }
+              }
+            }
+          }
+        });
+        commit("setOtherPlayers", state.otherPlayers);
+      }
     },
   },
   modules: {},

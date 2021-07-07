@@ -1,5 +1,11 @@
 # Deck of Cards Simulator
 
+## Contributors
+
+- [Brookzerker](https://github.com/brookspatton)
+- [Github Copilot](https://github.com/copilot)
+- [Twitch Chat](https://twitch.tv/brookzerker)
+
 ## Assets
 
 ### Web components
