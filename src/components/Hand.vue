@@ -8,6 +8,7 @@
       :suite="card.suite"
       visibilityToggle
       :visible="card.visible"
+      discardToggle
       @click="handleClickingCard"
     ></card>
   </section>

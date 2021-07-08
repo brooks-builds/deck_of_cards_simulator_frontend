@@ -1,11 +1,14 @@
 <template>
   <div :class="computeClasses" class="card" @click="handleClick">
-    <visibility-toggle
-      v-if="visibilityToggle"
-      :visible="visible"
-    ></visibility-toggle>
+    <div class="icons">
+      <visibility-toggle
+        v-if="visibilityToggle"
+        :visible="visible"
+      ></visibility-toggle>
+    </div>
     <img :src="back" alt="Back of a playing card" v-if="displayCardBack" />
     <img :src="faceCard" :alt="altText" v-else-if="displayCardFront" />
+    <discard-icon v-if="discardToggle"></discard-icon>
   </div>
 </template>
 
@@ -64,6 +67,7 @@ import jackOfDiamonds from "../assets/jack_of_diamonds.svg";
 import queenOfDiamonds from "../assets/queen_of_diamonds.svg";
 import kingOfDiamonds from "../assets/king_of_diamonds.svg";
 import aceOfDiamonds from "../assets/ace_of_diamonds.svg";
+import DiscardIcon from "./DiscardIcon.vue";
 
 export default {
   props: {
@@ -73,6 +77,7 @@ export default {
     small: Boolean,
     visibilityToggle: Boolean,
     visible: Boolean,
+    discardToggle: Boolean,
   },
   data() {
     return {
@@ -157,6 +162,7 @@ export default {
   },
   components: {
     VisibilityToggle,
+    DiscardIcon,
   },
   methods: {
     handleClick() {
@@ -192,5 +198,14 @@ div {
 .small {
   width: 1.5rem;
   height: 2rem;
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.card {
+  margin-bottom: 0.5rem;
 }
 </style>
