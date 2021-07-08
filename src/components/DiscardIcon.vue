@@ -1,5 +1,10 @@
 <template>
-  <img :src="discardIcon" alt="Discard your card" class="discard-icon" />
+  <img
+    :src="discardIcon"
+    alt="Discard your card"
+    class="discard-icon"
+    @click="handleClick"
+  />
 </template>
 
 <script>
@@ -9,6 +14,11 @@ export default {
     return {
       discardIcon,
     };
+  },
+  methods: {
+    handleClick() {
+      this.$emit("click");
+    },
   },
 };
 </script>

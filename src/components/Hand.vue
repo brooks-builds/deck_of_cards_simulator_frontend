@@ -10,6 +10,7 @@
       :visible="card.visible"
       discardToggle
       @click="handleClickingCard"
+      @discard="handleDiscard"
     ></card>
   </section>
 </template>
@@ -29,6 +30,9 @@ export default {
   methods: {
     handleClickingCard(card) {
       this.$emit("toggleVisibility", card);
+    },
+    handleDiscard(card) {
+      this.$emit("discard", card);
     },
   },
 };

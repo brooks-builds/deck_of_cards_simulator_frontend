@@ -1,14 +1,16 @@
 <template>
-  <div :class="computeClasses" class="card" @click="handleClick">
+  <div :class="computeClasses" class="card">
     <div class="icons">
       <visibility-toggle
         v-if="visibilityToggle"
         :visible="visible"
       ></visibility-toggle>
     </div>
-    <img :src="back" alt="Back of a playing card" v-if="displayCardBack" />
-    <img :src="faceCard" :alt="altText" v-else-if="displayCardFront" />
-    <discard-icon v-if="discardToggle"></discard-icon>
+    <div @click="handleToggleVisibility">
+      <img :src="back" alt="Back of a playing card" v-if="displayCardBack" />
+      <img :src="faceCard" :alt="altText" v-else-if="displayCardFront" />
+    </div>
+    <discard-icon v-if="discardToggle" @click="handleDiscard"></discard-icon>
   </div>
 </template>
 
@@ -165,8 +167,15 @@ export default {
     DiscardIcon,
   },
   methods: {
-    handleClick() {
+    handleToggleVisibility() {
       this.$emit("click", {
+        value: this.value,
+        suite: this.suite,
+        visible: this.visible,
+      });
+    },
+    handleDiscard() {
+      this.$emit("discard", {
         value: this.value,
         suite: this.suite,
         visible: this.visible,

@@ -27,6 +27,7 @@
         <hand
           class="hand"
           @toggleVisibility="handleCardTogglingVisibility"
+          @discard="handleDiscard"
         ></hand>
       </section>
     </section>
@@ -78,6 +79,9 @@ export default {
     },
     handleCardTogglingVisibility(card) {
       this.$emit("cardTogglingVisibility", card);
+    },
+    handleDiscard(card) {
+      this.$emit("discard", card);
     },
   },
 };

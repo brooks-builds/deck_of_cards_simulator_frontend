@@ -17,6 +17,7 @@
       @drawCard="handleDrawCard"
       @nameSet="handleNameSet"
       @cardTogglingVisibility="handleCardTogglingVisibility"
+      @discard="handleDiscard"
     />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -86,6 +87,9 @@ export default {
     },
     handleCardTogglingVisibility(card) {
       this.$store.dispatch("toggleCardVisibility", card);
+    },
+    handleDiscard(card) {
+      this.$store.dispatch("discardCard", card);
     },
   },
   watch: {

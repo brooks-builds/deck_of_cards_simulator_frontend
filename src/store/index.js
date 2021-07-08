@@ -20,6 +20,7 @@ export default new Vuex.Store({
       DrawDeckUpdated: "handleDrawDeckUpdated",
       PlayerJoinedRoomInSession: "handlePlayerJoinedRoomInSession",
       ToggleVisibilityOfCard: "handleToggleVisibilityOfCard",
+      DiscardCard: "handleDiscardCard",
     },
     name: "",
     playerId: null,
@@ -72,6 +73,16 @@ export default new Vuex.Store({
     },
     setOtherPlayers(state, otherPlayers) {
       Vue.set(state, "otherPlayers", otherPlayers);
+    },
+    removeCardFromPlayerHand(state, card) {
+      let cardIndex;
+      for (let index in state.hand) {
+        let cardInHand = state.hand[index];
+        if (cardInHand.suite == card.suite && cardInHand.value == card.value) {
+          cardIndex = index;
+        }
+      }
+      state.hand.splice(cardIndex, 1);
     },
   },
   actions: {
@@ -233,6 +244,14 @@ export default new Vuex.Store({
           }
         });
         commit("setOtherPlayers", state.otherPlayers);
+      }
+    },
+    discardCard({ state }, card) {
+      Api.discardCard(state.websocket, state.roomCode, state.playerId, card);
+    },
+    handleDiscardCard({ state, commit }, messageData) {
+      if (messageData.player_id == state.playerId) {
+        commit("removeCardFromPlayerHand", messageData.card);
       }
     },
   },
