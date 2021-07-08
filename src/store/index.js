@@ -151,6 +151,12 @@ export default new Vuex.Store({
       if (messageData.player_id) {
         commit("setPlayerId", messageData.player_id);
       }
+
+      if (messageData.other_players) {
+        messageData.other_players.forEach((player) => {
+          commit("addPlayer", player);
+        });
+      }
     },
     handleChat({ commit }, event) {
       commit("addChatMessage", {
