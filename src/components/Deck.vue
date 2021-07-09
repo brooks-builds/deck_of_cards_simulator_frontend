@@ -1,7 +1,12 @@
 <template>
   <section>
-    <div class="cards" v-if="deckExists" @click="handleClickingDeck">
-      <card :display="displayCard"></card>
+    <div class="cards" @click="handleClickingDeck">
+      <card
+        :display="displayCard"
+        :suite="topSuite"
+        :value="topValue"
+        :visible="topVisible"
+      ></card>
       <p>{{ cardCount }}</p>
     </div>
   </section>
@@ -14,19 +19,37 @@ export default {
   components: {
     Card,
   },
+  props: {
+    cards: Array,
+    faceup: Boolean,
+  },
   computed: {
     cardCount() {
-      return this.$store.state.drawDeckSize;
-    },
-    deckExists() {
-      return this.$store.state.drawDeckSize != null;
+      return this.cards.length;
     },
     displayCard() {
-      if (this.$store.state.drawDeckSize > 0) {
+      if (this.cards.length == 0) {
+        return "nothing";
+      }
+
+      if (this.cards.length > 0) {
+        if (this.faceup) {
+          return "front";
+        }
+
         return "back";
       }
 
       return "nothing";
+    },
+    topValue() {
+      return this.cards[this.cardCount - 1].value;
+    },
+    topSuite() {
+      return this.cards[this.cardCount - 1].suite;
+    },
+    topVisible() {
+      return this.cards[this.cardCount - 1].visible;
     },
   },
   methods: {

@@ -187,12 +187,10 @@ export default {
 
 <style scoped>
 img {
-  width: 100%;
+  width: 2rem;
 }
 
 div {
-  width: 2.5rem;
-  height: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;

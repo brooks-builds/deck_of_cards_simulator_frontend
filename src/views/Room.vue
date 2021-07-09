@@ -7,7 +7,7 @@
           :key="otherPlayer.id"
           class="other-player"
         >
-          <p>{{ otherPlayer.name }}</p>
+          <p class="other-name">{{ otherPlayer.name }}</p>
           <div class="row">
             <card
               v-for="(card, index) in otherPlayer.hand"
@@ -21,7 +21,12 @@
         </div>
       </section>
       <section class="center">
-        <deck @drawCard="handleDrawCard" class="deck row"></deck>
+        <deck
+          @drawCard="handleDrawCard"
+          class="deck row"
+          :cards="$store.state.drawDeck"
+        ></deck>
+        <deck :cards="$store.state.discardPile" faceup class="deck"></deck>
       </section>
       <section class="center">
         <hand
@@ -127,5 +132,13 @@ export default {
 .other-player {
   display: flex;
   flex-direction: column;
+}
+
+.deck {
+  margin-right: 0.5rem;
+}
+
+.other-name {
+  margin-bottom: 0.5rem;
 }
 </style>

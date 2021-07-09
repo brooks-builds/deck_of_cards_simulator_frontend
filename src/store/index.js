@@ -10,7 +10,7 @@ export default new Vuex.Store({
     message: "",
     roomCode: null,
     chatMessages: [],
-    drawDeckSize: 0,
+    drawDeck: [],
     hand: [],
     commandToAction: {
       CreateGame: "handleCreateGame",
@@ -25,6 +25,7 @@ export default new Vuex.Store({
     name: "",
     playerId: null,
     otherPlayers: [],
+    discardPile: [],
   },
   mutations: {
     setWebsocket(state, websocket) {
@@ -41,8 +42,9 @@ export default new Vuex.Store({
       messages.push(message);
       Vue.set(state, "chatMessages", messages);
     },
-    setDrawDeckSize(state, size) {
-      Vue.set(state, "drawDeckSize", size);
+    removeCardFromDrawDeck(state) {
+      state.drawDeck.pop();
+      Vue.set(state, "drawDeck", state.drawDeck);
     },
     addCard(state, card) {
       const hand = state.hand;
@@ -83,6 +85,40 @@ export default new Vuex.Store({
         }
       }
       state.hand.splice(cardIndex, 1);
+    },
+    removeCardFromOtherPlayerHand(state, { card, playerId }) {
+      let otherPlayer;
+      let otherPlayerIndex;
+      for (let index in state.otherPlayers) {
+        otherPlayer = state.otherPlayers[index];
+        if (otherPlayer.id === playerId) {
+          otherPlayerIndex = index;
+        }
+      }
+      const hand = otherPlayer.hand.filter((handCard) => {
+        return handCard.suite != card.suite && handCard.value != card.value;
+      });
+      if (hand.length == otherPlayer.hand.length) {
+        hand.pop();
+      }
+      otherPlayer.hand = hand;
+      const otherPlayers = state.otherPlayers;
+      otherPlayers[otherPlayerIndex] = otherPlayer;
+      Vue.set(state, "otherPlayers", otherPlayers);
+    },
+    resetDrawDeck(state, cardCount) {
+      const drawDeck = [];
+      for (let count = 0; count < cardCount; count++) {
+        drawDeck.push({ suite: null, value: null, visible: false });
+      }
+      Vue.set(state, "drawDeck", drawDeck);
+    },
+    addCardToDiscardPile(state, card) {
+      state.discardPile.push(card);
+      Vue.set(state, "discardPile", state.discardPile);
+    },
+    setDiscardPile(state, discardPile) {
+      Vue.set(state, "discardPile", discardPile);
     },
   },
   actions: {
@@ -157,7 +193,7 @@ export default new Vuex.Store({
         message: `${messageData.player_name} joined the room`,
       });
       if (messageData.draw_deck_size) {
-        commit("setDrawDeckSize", messageData.draw_deck_size);
+        commit("resetDrawDeck", messageData.draw_deck_size);
       }
       if (messageData.player_id) {
         commit("setPlayerId", messageData.player_id);
@@ -167,6 +203,10 @@ export default new Vuex.Store({
         messageData.other_players.forEach((player) => {
           commit("addPlayer", player);
         });
+      }
+
+      if (messageData.discard_pile) {
+        commit("setDiscardPile", messageData.discard_pile);
       }
     },
     handleChat({ commit }, event) {
@@ -179,7 +219,7 @@ export default new Vuex.Store({
       commit("addCard", event.card);
     },
     handleDrawDeckUpdated({ commit }, messageData) {
-      commit("setDrawDeckSize", messageData.draw_deck_size);
+      commit("removeCardFromDrawDeck");
       let { card } = messageData;
       if (!card) {
         card = { suite: null, value: null };
@@ -252,7 +292,14 @@ export default new Vuex.Store({
     handleDiscardCard({ state, commit }, messageData) {
       if (messageData.player_id == state.playerId) {
         commit("removeCardFromPlayerHand", messageData.card);
+      } else {
+        commit("removeCardFromOtherPlayerHand", {
+          card: messageData.card,
+          playerId: messageData.player_id,
+        });
       }
+
+      commit("addCardToDiscardPile", messageData.card);
     },
   },
   modules: {},

@@ -34,6 +34,7 @@ export default {
     this.connectToServer();
     const messageBar = document.querySelector("#message");
     this.messageBar = messageBar;
+    this.$store.commit("resetDrawDeck", 52);
   },
   components: { CustomButton, TopBar },
   data() {
