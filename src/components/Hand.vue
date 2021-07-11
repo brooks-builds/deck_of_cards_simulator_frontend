@@ -43,4 +43,8 @@ section {
   display: flex;
   margin-bottom: 0.5rem;
 }
+
+.card {
+  margin-right: 0.25rem;
+}
 </style>

@@ -16,6 +16,7 @@
               :suite="card.suite"
               :value="card.value"
               small
+              class="card"
             ></card>
           </div>
         </div>
@@ -108,6 +109,7 @@ export default {
 .room {
   display: flex;
   border: 3px solid lightgray;
+  font-size: 1.5rem;
 }
 
 .main {
@@ -151,6 +153,10 @@ export default {
 }
 
 .other-name {
-  margin-bottom: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.card {
+  margin-right: 2.5rem;
 }
 </style>

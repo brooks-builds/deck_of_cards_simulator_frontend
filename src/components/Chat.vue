@@ -14,6 +14,7 @@
       <custom-text-field
         label="chat message"
         @input="handleInput"
+        fullwidth
       ></custom-text-field>
       <custom-button label="chat" @click="submitChat"></custom-button>
     </form>
@@ -57,6 +58,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-size: 1.5rem;
 }
 
 .chat-messages {

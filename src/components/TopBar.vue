@@ -1,5 +1,5 @@
 <template>
-  <mwc-top-app-bar>
+  <mwc-top-app-bar class="mwc-top-bar">
     <div slot="title">{{ title }}</div>
     <div slot="actionItems" v-if="roomCode">
       <custom-button label="Quit" @click="handleQuit"></custom-button>
@@ -27,8 +27,4 @@ export default {
 };
 </script>
 
-<style scoped>
-mwc-top-app-bar {
-  --mdc-top-app-bar-width: 90vw;
-}
-</style>
+<style scoped></style>

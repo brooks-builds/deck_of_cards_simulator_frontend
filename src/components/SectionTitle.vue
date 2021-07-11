@@ -20,7 +20,7 @@ export default {
 
 <style scoped>
 h2 {
-  font-size: 2rem;
+  font-size: 3rem;
 }
 
 .center {

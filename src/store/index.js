@@ -88,26 +88,6 @@ export default new Vuex.Store({
       }
       state.hand.splice(cardIndex, 1);
     },
-    removeCardFromOtherPlayerHand(state, { card, playerId }) {
-      let otherPlayer;
-      let otherPlayerIndex;
-      for (let index in state.otherPlayers) {
-        otherPlayer = state.otherPlayers[index];
-        if (otherPlayer.id === playerId) {
-          otherPlayerIndex = index;
-        }
-      }
-      const hand = otherPlayer.hand.filter((handCard) => {
-        return handCard.suite != card.suite && handCard.value != card.value;
-      });
-      if (hand.length == otherPlayer.hand.length) {
-        hand.pop();
-      }
-      otherPlayer.hand = hand;
-      const otherPlayers = state.otherPlayers;
-      otherPlayers[otherPlayerIndex] = otherPlayer;
-      Vue.set(state, "otherPlayers", otherPlayers);
-    },
     resetDrawDeck(state, cardCount) {
       const drawDeck = [];
       for (let count = 0; count < cardCount; count++) {
@@ -142,6 +122,15 @@ export default new Vuex.Store({
     },
     clearChat(state) {
       Vue.set(state, "chatMessages", []);
+    },
+    setPlayerHand(state, { playerId, hand }) {
+      const player = state.otherPlayers.find(
+        (player) => player.id === playerId
+      );
+      if (player) {
+        player.hand = hand;
+      }
+      Vue.set(state, "otherPlayers", state.otherPlayers);
     },
   },
   actions: {
@@ -316,9 +305,9 @@ export default new Vuex.Store({
       if (messageData.player_id == state.playerId) {
         commit("removeCardFromPlayerHand", messageData.card);
       } else {
-        commit("removeCardFromOtherPlayerHand", {
-          card: messageData.card,
+        commit("setPlayerHand", {
           playerId: messageData.player_id,
+          hand: messageData.hand,
         });
       }
 

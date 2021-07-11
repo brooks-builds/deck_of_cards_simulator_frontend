@@ -12,6 +12,7 @@
       @click="connectToServer"
     ></custom-button>
     <router-view
+      class="router"
       @createGame="createGame"
       @joinRoom="joinRoom"
       @sendChatMessage="handleSendingChatMessage"
@@ -113,16 +114,22 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
 body {
   background-color: #252525;
   color: lightskyblue;
 }
 
-.app {
-  margin: 1rem;
-}
-
 .clickable {
   cursor: pointer;
+}
+
+.app {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+.app > *,
+.router > * {
+  margin-bottom: 1rem;
 }
 </style>

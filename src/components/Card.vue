@@ -188,8 +188,8 @@ export default {
 <style scoped>
 img,
 .card-outline {
-  width: 35px;
-  height: 50px;
+  width: 60px;
+  height: 95px;
 }
 
 div {

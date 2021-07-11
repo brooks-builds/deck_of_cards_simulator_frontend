@@ -1,5 +1,9 @@
 <template>
-  <mwc-button :label="label" @click="handleClick"></mwc-button>
+  <mwc-button
+    :label="label"
+    @click="handleClick"
+    class="custom-button"
+  ></mwc-button>
 </template>
 
 <script>
@@ -20,5 +24,9 @@ export default {
 mwc-button {
   --mdc-theme-primary: #e9437a;
   --mdc-theme-on-primary: white;
+}
+
+.custom-button {
+  --mdc-typography-button-font-size: 2rem;
 }
 </style>
