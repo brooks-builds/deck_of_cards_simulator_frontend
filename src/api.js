@@ -55,6 +55,13 @@ const Api = {
       .build();
     websocket.send(JSON.stringify(message));
   },
+  resetDeck(websocket, roomId) {
+    const message = new MessageBuilder()
+      .setAction("ResetDeck")
+      .setRoomId(roomId)
+      .build();
+    websocket.send(JSON.stringify(message));
+  },
 };
 
 export default Api;

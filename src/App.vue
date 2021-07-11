@@ -18,6 +18,7 @@
       @nameSet="handleNameSet"
       @cardTogglingVisibility="handleCardTogglingVisibility"
       @discard="handleDiscard"
+      @resetDeck="handleResetDeck"
     />
     <mwc-snackbar id="message" :labelText="message"></mwc-snackbar>
   </div>
@@ -91,6 +92,9 @@ export default {
     },
     handleDiscard(card) {
       this.$store.dispatch("discardCard", card);
+    },
+    handleResetDeck() {
+      this.$store.dispatch("resetDeck");
     },
   },
   watch: {

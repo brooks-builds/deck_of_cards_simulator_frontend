@@ -21,11 +21,18 @@
         </div>
       </section>
       <section class="center">
-        <deck
-          @drawCard="handleDrawCard"
-          class="deck row"
-          :cards="$store.state.drawDeck"
-        ></deck>
+        <div>
+          <reset-deck-icon
+            hover
+            class="reset-deck-icon"
+            @click="handleResetDeck"
+          ></reset-deck-icon>
+          <deck
+            @drawCard="handleDrawCard"
+            class="deck row"
+            :cards="$store.state.drawDeck"
+          ></deck>
+        </div>
         <deck :cards="$store.state.discardPile" faceup class="deck"></deck>
       </section>
       <section class="center">
@@ -47,6 +54,7 @@ import Chat from "../components/Chat.vue";
 import Deck from "../components/Deck.vue";
 import Hand from "../components/Hand.vue";
 import Card from "../components/Card.vue";
+import ResetDeckIcon from "../components/ResetDeckIcon.vue";
 
 export default {
   components: {
@@ -54,6 +62,7 @@ export default {
     Deck,
     Hand,
     Card,
+    ResetDeckIcon,
   },
   computed: {
     roomCode() {
@@ -87,6 +96,9 @@ export default {
     },
     handleDiscard(card) {
       this.$emit("discard", card);
+    },
+    handleResetDeck() {
+      this.$emit("resetDeck");
     },
   },
 };
@@ -135,7 +147,7 @@ export default {
 }
 
 .deck {
-  margin-right: 0.5rem;
+  margin: 0.5rem;
 }
 
 .other-name {

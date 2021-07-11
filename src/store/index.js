@@ -21,6 +21,7 @@ export default new Vuex.Store({
       PlayerJoinedRoomInSession: "handlePlayerJoinedRoomInSession",
       ToggleVisibilityOfCard: "handleToggleVisibilityOfCard",
       DiscardCard: "handleDiscardCard",
+      ResetDeck: "handleResetDeck",
     },
     name: "",
     playerId: null,
@@ -119,6 +120,14 @@ export default new Vuex.Store({
     },
     setDiscardPile(state, discardPile) {
       Vue.set(state, "discardPile", discardPile);
+    },
+    resetOtherPlayersHands(state) {
+      const { otherPlayers } = state;
+      const updatedOtherPlayers = otherPlayers.map((player) => {
+        player.hand = [];
+        return player;
+      });
+      Vue.set(state, "otherPlayers", updatedOtherPlayers);
     },
   },
   actions: {
@@ -300,6 +309,16 @@ export default new Vuex.Store({
       }
 
       commit("addCardToDiscardPile", messageData.card);
+    },
+    resetDeck({ state }) {
+      Api.resetDeck(state.websocket, state.roomCode);
+    },
+    handleResetDeck({ commit }, messageData) {
+      commit("setDiscardPile", messageData.discard_pile);
+      commit("resetDrawDeck", messageData.draw_deck_size);
+      commit("setMessage", messageData.message);
+      commit("setHand", []);
+      commit("resetOtherPlayersHands");
     },
   },
   modules: {},

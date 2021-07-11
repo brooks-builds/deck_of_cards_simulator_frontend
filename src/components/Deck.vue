@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="deck">
     <div class="cards" @click="handleClickingDeck">
       <card
         :display="displayCard"
@@ -43,13 +43,13 @@ export default {
       return "nothing";
     },
     topValue() {
-      return this.cards[this.cardCount - 1].value;
+      return this.cards[this.cardCount - 1]?.value;
     },
     topSuite() {
-      return this.cards[this.cardCount - 1].suite;
+      return this.cards[this.cardCount - 1]?.suite;
     },
     topVisible() {
-      return this.cards[this.cardCount - 1].visible;
+      return this.cards[this.cardCount - 1]?.visible;
     },
   },
   methods: {
@@ -62,9 +62,9 @@ export default {
 
 <style scoped>
 section {
-  width: 2.5rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: end;
 }
 
 p {

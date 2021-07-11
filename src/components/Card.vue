@@ -6,7 +6,7 @@
         :visible="visible"
       ></visibility-toggle>
     </div>
-    <div @click="handleToggleVisibility">
+    <div @click="handleToggleVisibility" class="card-outline">
       <img :src="back" alt="Back of a playing card" v-if="displayCardBack" />
       <img :src="faceCard" :alt="altText" v-else-if="displayCardFront" />
     </div>
@@ -186,8 +186,10 @@ export default {
 </script>
 
 <style scoped>
-img {
-  width: 2rem;
+img,
+.card-outline {
+  width: 35px;
+  height: 50px;
 }
 
 div {
