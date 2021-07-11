@@ -62,6 +62,14 @@ const Api = {
       .build();
     websocket.send(JSON.stringify(message));
   },
+  quit(websocket, roomId, playerId) {
+    const message = new MessageBuilder()
+      .setAction("Quit")
+      .setRoomId(roomId)
+      .setPlayerId(playerId)
+      .build();
+    websocket.send(JSON.stringify(message));
+  },
 };
 
 export default Api;

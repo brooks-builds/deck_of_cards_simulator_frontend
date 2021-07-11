@@ -22,6 +22,7 @@ export default new Vuex.Store({
       ToggleVisibilityOfCard: "handleToggleVisibilityOfCard",
       DiscardCard: "handleDiscardCard",
       ResetDeck: "handleResetDeck",
+      Quit: "handleQuit",
     },
     name: "",
     playerId: null,
@@ -128,6 +129,19 @@ export default new Vuex.Store({
         return player;
       });
       Vue.set(state, "otherPlayers", updatedOtherPlayers);
+    },
+    removePlayerById(state, playerId) {
+      const { otherPlayers } = state;
+      const updatedOtherPlayers = otherPlayers.filter((player) => {
+        return player.id !== playerId;
+      });
+      Vue.set(state, "otherPlayers", updatedOtherPlayers);
+    },
+    leaveRoom(state) {
+      Vue.set(state, "roomCode", null);
+    },
+    clearChat(state) {
+      Vue.set(state, "chatMessages", []);
     },
   },
   actions: {
@@ -319,6 +333,19 @@ export default new Vuex.Store({
       commit("setMessage", messageData.message);
       commit("setHand", []);
       commit("resetOtherPlayersHands");
+    },
+    quit({ state, commit }) {
+      Api.quit(state.websocket, state.roomCode, state.playerId);
+      commit("leaveRoom");
+      commit("setMessage", "left room");
+      commit("setOtherPlayers", []);
+      commit("setHand", []);
+      commit("clearChat");
+    },
+    handleQuit({ commit }, messageData) {
+      commit("setMessage", messageData.message);
+      commit("setDiscardPile", messageData.discard_pile);
+      commit("removePlayerById", messageData.player_id);
     },
   },
   modules: {},

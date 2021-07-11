@@ -4,6 +4,7 @@
       title="Deck of Cards Simulator"
       class="top-bar"
       :roomCode="roomCode"
+      @quit="handleQuit"
     ></top-bar>
     <custom-button
       v-if="websocketFailed"
@@ -95,6 +96,9 @@ export default {
     },
     handleResetDeck() {
       this.$store.dispatch("resetDeck");
+    },
+    handleQuit() {
+      this.$store.dispatch("quit");
     },
   },
   watch: {
